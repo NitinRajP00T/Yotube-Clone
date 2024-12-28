@@ -9,10 +9,10 @@ const cookie = require("cookie-parser")
 require('dotenv').config();
 exports.createSingup = async (req, res) => {
     try {
-        const { username, email, password, img } = req.body;
+        const { username, userId,email, password, img } = req.body;
 
         // Validate required fields
-        if (!username || !password || !email) {
+        if (!username||!userId || !password || !email) {
             return res.status(400).json({
                 success: false,
                 msg: "Please fill all the required fields",
@@ -33,6 +33,7 @@ exports.createSingup = async (req, res) => {
 
         // Create a new user
         const newUser = await singUp.create({
+            userId,
             username,
             password: hashpass,
             email,
