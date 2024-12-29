@@ -40,3 +40,51 @@ exports.createchannel = async (req, res) => {
     }
 
 }
+
+//fetching the detail of the channel
+exports.getchennelById=async(req,res)=>{
+    try{
+        const channelId=req.params.channelId;
+
+        const id=await channelschema.findOne({channelId:channelId});
+        if(!id){
+            return res.status(404).json({message:"Channel not found"})
+        }
+        res.status(200).json({message:"Channel found",
+            channelDetail:id})
+    }catch(err){
+        console.log(err);
+        res.status(500).json({message:"Error in fetching channel detail"})
+    }
+}
+
+
+
+
+
+
+
+exports.ChannelDetail=async(req,res)=>{
+    try{
+        const {channelName}=req.body;
+        const getChannel=await channelschema.findOne({channelName:channelName})
+        if(!getChannel){
+            return res.status(404).json({
+                Success:false,
+                message:"Channel not found"}
+            )
+        }
+        res.status(200).json({
+            Success:true,
+            msg:"channel found",
+            channel:getChannel
+        })
+    }catch(err){
+        console.log(err);
+        res.status(500).json({
+            Success:false,
+            msg:"internal server error"
+        }
+        )
+    }
+}

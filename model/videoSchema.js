@@ -19,11 +19,11 @@ const videoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // channelId: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Channel',
-  //   required: true,
-  // },
+  channelId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Channel',
+    required: true,
+  },
   uploader: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'singup',

@@ -5,7 +5,7 @@ const singup = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => uuidv4(), // Assigning default value
+    //default: () => uuidv4(), // Assigning default value
   },
   username: {
     type: String,
