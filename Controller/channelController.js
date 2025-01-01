@@ -1,5 +1,5 @@
 
-const channelschema = require("../model/ChannelSchema")
+const channelschema = require("../model/channelSchema")
 
 exports.createchannel = async (req, res) => {
 

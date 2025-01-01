@@ -6,10 +6,12 @@ exports.cloudinaryConnect=()=>{
     try{
         cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-            api_key: process.env.cLOUDINARY_API_KEY,
-            api_secret:process.env.CLOUDINARY_API_SECREAT
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret:process.env.CLOUDINARY_API_SECRET
         });
     }catch(err){
+        console.log("hello clodinary")
         console.log(err);
     }
 }
+

@@ -1,33 +1,40 @@
 const mongoose = require('mongoose');
-//const Channel=require('../model/ChannelMange')
+const channelSchema=require('../model/channelSchema')
+const commentSchema=require('../model/commentSchema')
+const { v4: uuidv4, stringify } = require('uuid');
 
 const videoSchema = new mongoose.Schema({
   videoId: {
     type: String,
     required: true,
-    unique: true,
+     //unique: true,
+    //default: () => uuidv4(),
+  },
+  videoURL:{
+    type:String,
+   // required:true
   },
   title: {
     type: String,
     required: true,
   },
-  thumbnailUrl: {
+  thubnailURL: {
     type: String,
     required: true,
   },
   description: {
     type: String,
-    required: true,
+   required: true,
   },
   channelId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Channel',
-    required: true,
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'Channel',
+     required: true,    //!//TypeError: Invalid schema configuration: `true` is not a valid type at path `required`..
   },
   uploader: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'singup',
-    required: true,
+   // required: true,
   },
   views: {
     type: Number,
@@ -48,7 +55,7 @@ const videoSchema = new mongoose.Schema({
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment',
+      ref: 'comment',
     },
   ],
 });
