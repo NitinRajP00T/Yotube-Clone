@@ -14,7 +14,7 @@ const videoSchema = new mongoose.Schema({
     type:String,
    // required:true
   },
-  title: {
+  tittle: {
     type: String,
     required: true,
   },
@@ -52,7 +52,7 @@ const videoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  comments: [
+  commentId: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'comment',

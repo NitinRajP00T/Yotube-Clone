@@ -5,17 +5,29 @@ const commentSchema = new mongoose.Schema({
   commentId: {
     type: String,
     required: true,
-    unique: true,
+   // unique: true,
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'singup',
-    required: true,
-  },
+  // userId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'singup',
+  //   required: true,
+  // },
   videoId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Video',
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: 'Video',
+    // required: true,
+  },
+  username:{
+    type: String,
     required: true,
+  },
+  email:{
+type:String,
+required:true
+  },
+  avtarImg:{
+    type:String,
+    require:true,
   },
   text: {
     type: String,

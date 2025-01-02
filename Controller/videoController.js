@@ -1,8 +1,8 @@
 const cloudinary = require('cloudinary').v2;
-const videoSchema = require('../model/videoSchema');
+const videoSchema =require('../model/videoSchema')
 //const channelschema = require('../model/channelSchema')
 //channle background ke lye or channel circuler pic ke liye "post call"
-//const comnetSchame = require('../model/commentSchema');
+const commentSchema = require('../model/commentSchema');
 const mongoose=require("mongoose")
 
 const { json } = require('express');
@@ -55,9 +55,9 @@ async function uploadToCloudinary(file, folder) {
 
 exports.uploadVideoCloud = async (req, res) => {
     try {
-        const { videoId, title, description, channelId, views, likes, dislikes, comments } = req.body;
+        const { videoId, tittle, description, channelId, views, likes, dislikes, commentId } = req.body;
 
-        if (!videoId || !title || !description || !channelId || !views || !likes || !dislikes) {
+        if (!videoId || !tittle || !description || !channelId || !views || !likes || !dislikes||!commentId) {
             return res.status(400).json({ success: false, msg: "all required fialed to upload video" })
         }
 
@@ -113,13 +113,13 @@ exports.uploadVideoCloud = async (req, res) => {
         const videoDetail = await videoSchema.create({
             // videoId:uniqueVideoId,
             videoId,
-            title,
+            tittle,
             thubnailURL: thumbnailUrlRespons.secure_url,
             videoURL: VideoulrRespons.secure_url,
             channelId,
             description,
             views,
-            likes, dislikes, comnetSchame
+            likes, dislikes, commentId
         })
 
         res.status(201).json({
@@ -142,7 +142,7 @@ exports.uploadVideoCloud = async (req, res) => {
 exports.getuploadedvideos = async (req, res) => {
     try {
         // Find all videos
-        const allvideos = await videoSchema.find({});
+        const allvideos = await videoSchema.find({}).populate('channelId').populate('commentId');
 
         // If no videos are found
         if (!allvideos || allvideos.length === 0) {
@@ -181,7 +181,7 @@ exports.getUploadedVideosById = async (req, res) => {
             //const videoDetails = await videoSchema.findById(videoId).populate('channleId')//need valid _id (objectId) //note (getvideoById/6774922cca97798bff3e3cd8)
         
             //custom search->
-              const videoDetails=await videoSchema.findOne(obj.videoId).populate('channelId').populate('commentId')// Populate related field if necessary
+     const videoDetails=await videoSchema.findOne(obj.videoId).populate('channelId').populate('commentId')// Populate related field if necessary
     
             if (!videoDetails) {
                 return res.status(404).json({
@@ -246,3 +246,14 @@ exports.deleteUploadedVideoById = async (req, res) => {
         });
     }
 };
+
+// exports.updatevideos=async(req,res)=>{
+//     try{
+
+//         const {videoId}=req.params.videoId;
+
+//         try{
+//             const updateVideoDeatail=await videoSchema.updateOne
+//         }
+//     }
+// }
