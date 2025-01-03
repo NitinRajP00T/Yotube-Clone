@@ -12,13 +12,16 @@ const videoroute=express.Router();
 
 
 //cloudinary uploading rout
-const { uploadVideoCloud ,getuploadedvideos,getUploadedVideosById,deleteUploadedVideoById} =require("../Controller/videoController")
+const { uploadVideoCloud ,getuploadedvideos,getUploadedVideosById,deleteUploadedVideoById,updatevideo} =require("../Controller/videoController")
 
 videoroute.post("/uploadvideocloud",uploadVideoCloud)
 
 videoroute.get("/getvideos",getuploadedvideos);
 
 videoroute.get("/getvideoById/:videoId",getUploadedVideosById);
+
+videoroute.put("/getvideoById/:vieoId",updatevideo)
+
 
 videoroute.delete("/deletvideoById/:videoId",deleteUploadedVideoById)
 
