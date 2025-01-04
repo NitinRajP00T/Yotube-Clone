@@ -18,6 +18,9 @@ const videoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  category:{
+type:String
+  },
   thubnailURL: {
     type: String,
     required: true,
@@ -27,10 +30,12 @@ const videoSchema = new mongoose.Schema({
    required: true,
   },
   channelId: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'Channel',
-     required: true,    //!//TypeError: Invalid schema configuration: `true` is not a valid type at path `required`..
-  },
+    //  type: mongoose.Schema.Types.ObjectId,
+    //  ref: 'Channel',
+    //  required: true,    //!//TypeError: Invalid schema configuration: `true` is not a valid type at path `required`..
+ 
+    type: String,
+    required: true, },
   uploader: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'singup',

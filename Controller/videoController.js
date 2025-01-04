@@ -1,9 +1,9 @@
 const cloudinary = require('cloudinary').v2;
-const videoSchema =require('../model/videoSchema')
-//const channelschema = require('../model/channelSchema')
+const videoSchema = require('../model/videoSchema')
+const channelschema = require('../model/channelSchema')
 //channle background ke lye or channel circuler pic ke liye "post call"
 const commentSchema = require('../model/commentSchema');
-const mongoose=require("mongoose")
+const mongoose = require("mongoose")
 
 const { json } = require('express');
 const channelSchema = require('../model/channelSchema');
@@ -56,9 +56,9 @@ async function uploadToCloudinary(file, folder) {
 
 exports.uploadVideoCloud = async (req, res) => {
     try {
-        const { videoId,  commentId ,channelId,tittle, description, views, likes, dislikes,} = req.body;
+        const { videoId, commentId, channelId, tittle, description, views, likes, dislikes, } = req.body;
 
-        if (!videoId || !tittle || !description || !channelId || !views || !likes || !dislikes||!commentId) {
+        if (!videoId || !tittle || !description || !channelId || !views || !likes || !dislikes || !commentId) {
             return res.status(400).json({ success: false, msg: "all required fialed to upload video" })
         }
 
@@ -175,40 +175,43 @@ exports.getUploadedVideosById = async (req, res) => {
     try {
         const videoId = req.params.videoId; // Ensure this matches your route definition
         console.log("params id", videoId);
-    
-     // Find the video using `videoId` and populate the related `channelId`
+
+        // Find the video using `videoId` and populate the related `channelId`
         try {
-           const obj={};
+            const obj = {};
             //const videoDetails = await videoSchema.findById(videoId).populate('channleId')//need valid _id (objectId) //note (getvideoById/6774922cca97798bff3e3cd8)
-        
+
             //custom search->not working with custom ids
-    //const idbasedvideoDetails=await videoSchema.findOne(videoId).populate('channelId').populate('commentId')// Populate related field if necessary
-    const video = await videoSchema.findOne({video:obj.videoId }); // Replace `customVideoId` with your custom ID field
+            //const idbasedvideoDetails=await videoSchema.findOne(videoId).populate('channelId').populate('commentId')// Populate related field if necessary
+            const video = await videoSchema.findOne({ video: obj.videoId }); // Replace `customVideoId` with your custom ID field
 
-    if (!video) {
-        return res.status(404).json({
-            success: false,
-            msg: "Video not found with the provided videoId.",
-        });
-    }
+            if (!video) {
+                return res.status(404).json({
+                    success: false,
+                    msg: "Video not found with the provided videoId.",
+                });
+            }
 
-    //Manually fetch the related channel and comments using their custom IDs
-    const channel = await channelSchema.findOne({ customChannelId: video.channelId }); // Replace `customChannelId` with your schema field
-    const comments = await commentSchema.find({ videoId: video.customVideoId }); // Fetch all comments for the video
+            //Manually fetch the related channel and comments using their custom IDs
+            const channel = await channelschema.findOne({ channelId:video.channelId }); // Replace `customChannelId` with your schema field
+            const comments = await commentSchema.find({ videoId:'1000'}); // Fetch all comments for the video
+           console.log("commnedId ",comments)
+           if(!comments){
+            return res.status(404).json({success:false,msg:"commnet is found"})
+           }
+           
+            // Step 3: Merge the data manually
+            const manualvideoDetails = {
+                ...video.toObject(), // Convert Mongoose document to plain object
+              channel:  channel,            // Add the fetched channel data
+               comments: comments,           // Add the fetched comments data
+            };
 
-    // Step 3: Merge the data manually
-    const manualvideoDetails = {
-        ...video.toObject(), // Convert Mongoose document to plain object
-        channel,            // Add the fetched channel data
-        comments,           // Add the fetched comments data
-    };
-    
             // Send success response
-            console.log("Fetched video details:", videoDetails);
+            console.log("Fetched video details:", manualvideoDetails||idbasedvideoDetails);
             res.status(200).json({
                 success: true,
-                msg: "Video details fetched successfully.",
-                videoDetails:videoDetails||idbasedvideoDetails, // Include the details of the video
+                videoDetails: manualvideoDetails || idbasedvideoDetails, // Include the details of the video
             });
         } catch (err) {
             console.error("Database error:", err);
@@ -224,7 +227,7 @@ exports.getUploadedVideosById = async (req, res) => {
             msg: "Internal server error.",
         });
     }
-    
+
 };
 
 
@@ -260,33 +263,35 @@ exports.deleteUploadedVideoById = async (req, res) => {
     }
 };
 
-exports.updatevideo=async(req,res)=>{
-    try{
+exports.updatevideo = async (req, res) => {
+    try {
 
-        const videoId=req.params.videoId;
+        const videoId = req.params.videoId;
 
-        try{
-            const {videoId,tittle,description,channelId,views,likes,dislikes,commentId}=req.body;
-          //  const update=await videoSchema.updateOne({videoId:videoId},{videoId, tittle, description, channelId, views, likes, dislikes, commentId})
-          const updateVideoDeatail=await videoSchema.find({videoId:videoId})
-          //  const updateVideoDeatail=await videoSchema.findOneAndUpdate({videoId:videoId},{videoId, tittle, description, channelId, views, likes, dislikes, commentId},{new:true})
+        try {
+            const { videoId, tittle, description, channelId, views, likes, dislikes, commentId } = req.body;
+            //  const update=await videoSchema.updateOne({videoId:videoId},{videoId, tittle, description, channelId, views, likes, dislikes, commentId})
+            const updateVideoDeatail = await videoSchema.find({ videoId: videoId })
+            //  const updateVideoDeatail=await videoSchema.findOneAndUpdate({videoId:videoId},{videoId, tittle, description, channelId, views, likes, dislikes, commentId},{new:true})
             res.status(200).json({
-                success:true,
-                msg:"video detail update succesfully ",
-                updatedVideodetal:updateVideoDeatail
+                success: true,
+                msg: "video detail update succesfully ",
+                updatedVideodetal: updateVideoDeatail
             })
         }
-        catch(err){
+        catch (err) {
             console.log(err)
             res.status(400).json({
-                success:false,
-                msg:"video detail update failed ",
+                success: false,
+                msg: "video detail update failed ",
             })
         }
     }
-    catch(err){
+    catch (err) {
         console.error(err);
-        res.status(500).json({success:false,
-            message:"internal server err"})
+        res.status(500).json({
+            success: false,
+            message: "internal server err"
+        })
     }
 }

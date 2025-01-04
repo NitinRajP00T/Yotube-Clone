@@ -1,6 +1,10 @@
 
 const channelschema = require("../model/channelSchema")
 
+/*user creating channel by the sighup user we used the new post call 
+with the cloudinary config for channel icone and channel banner (background)
+*/
+
 exports.createchannel = async (req, res) => {
 
 
