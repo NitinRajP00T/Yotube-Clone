@@ -56,16 +56,16 @@ async function uploadToCloudinary(file, folder) {
 
 exports.uploadVideoCloud = async (req, res) => {
     try {
-        const { videoId, commentId, channelId, tittle, description, views, likes, dislikes, } = req.body;
+        const { videoId, commentId, channelId, tittle, description, views, likes, dislikes,category } = req.body;
 
-        if (!videoId || !tittle || !description || !channelId || !views || !likes || !dislikes || !commentId) {
-            return res.status(400).json({ success: false, msg: "all required fialed to upload video" })
+        if (!videoId || !channelId || !commentId || !tittle || !description ||!category || !views || !likes || !dislikes ) {
+            return res.status(400).json({ success: false, msg: "all required fialed to upload video--" })
         }
 
 
         //thumnail conver picture video
         //    const thumailPicture=req.file?.image;
-        const thumbnailCoverImage = req.files?.thubnailURL;
+        const thumbnailCoverImage = req.files?.thumbnailURL;
         if (!thumbnailCoverImage) {
             return res.status(400).json({
                 success: false,
@@ -73,10 +73,9 @@ exports.uploadVideoCloud = async (req, res) => {
             })
         }
 
-        const imgSupportedFile = ['jpg', 'jpeg', 'png'];
+        const imgSupportedFile = ['jpg', 'jpeg', 'png','avif'];
         const imgfileExtention = thumbnailCoverImage.name.split('.').pop().toLowerCase();
-
-        if (!imgSupportedFile.includes(imgfileExtention)) {
+            if (!imgSupportedFile.includes(imgfileExtention)) {
             return res.status(400).json({
                 success: false,
                 msg: "invalid img foramte . only jpg, jpeg, pnd allowed "
@@ -115,7 +114,7 @@ exports.uploadVideoCloud = async (req, res) => {
             // videoId:uniqueVideoId,
             videoId,
             tittle,
-            thubnailURL: thumbnailUrlRespons.secure_url,
+            thumbnailURL: thumbnailUrlRespons.secure_url,
             videoURL: VideoulrRespons.secure_url,
             channelId,
             description,

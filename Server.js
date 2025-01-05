@@ -27,10 +27,14 @@ const channel=require('./routers/ChannelMange')//{channel}-->TypeError: Router.u
 
 const video=require('./routers/VideoMange')
 
-app.use(express.json())  //middle ware to parse the req.body if we not used that showing the destructring ->userdefine-username,email,etc
+app.use(express.json({limit:'50mb'}))  //middle ware to parse the req.body if we not used that showing the destructring ->userdefine-username,email,etc
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(fileUpload({
     useTempFiles:true,
     tempFileDir:'/tmp/',
+    limits:{
+        fileSize:50*1024*1024,
+    }
 }));
 
 
