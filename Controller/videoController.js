@@ -119,7 +119,7 @@ exports.uploadVideoCloud = async (req, res) => {
             channelId,
             description,
             views,
-            likes, dislikes, commentId
+            likes, dislikes, commentId,category
         })
 
         res.status(201).json({
